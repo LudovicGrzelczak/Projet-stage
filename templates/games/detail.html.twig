@@ -1,0 +1,54 @@
+{% extends 'inner-page.html.twig' %}
+
+
+{% block title %}
+	{{ jeu.name }}
+{% endblock %}
+
+{% block innertitle %}
+	{{ jeu.name }}
+{% endblock %}
+
+
+{% block body %}
+
+	<section class="container">
+		<img class="bg-offer" src="{{ asset('uploads/image_jeux/' ~ jeu.imageFilename) }}" alt="{{ jeu.name }}">
+		<div class="offer mx-auto d-block">
+			<div class="offer-head ">
+				<h2>{{ jeu.name }}</h2>
+			</div>
+			<hr>
+			<div class="row offer-body">
+				<div class="col-lg-6">
+					descriptif jeu
+				</div>
+				<div class="col-lg-6"><img class="offer-image" src="{{ asset('uploads/image_jeux/' ~ jeu.imageFilename) }}" alt="{{ jeu.name }}"></div>
+			</div>
+			<div class="row">
+
+				<div class="col-lg-6">
+
+					<form action="{{ path('add_server') }}" method="post">
+						<input type="hidden" name="jeu_id" value="{{ jeu.id }}">
+						<div>
+							<span>Choose your offer :</span>
+							<br>
+							{% for duration in duration %}
+								<label for="{{ duration.TypeDuration }}">{{ duration.TypeDuration }}</label>
+								<input type="radio" id="{{ duration.TypeDuration }}" name="duration_id" onchange="handleChange({{jeu.basePrice}}, {{duration.ratio}});;" value="{{ duration.id }}">
+							{% endfor %}
+						</div>
+						<div>
+							<h5>prix total: <span id="prixTotal"></span></h5>
+						</div>
+						<input type="submit" class="btn btn-log" value="Buy">
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+{% endblock %}

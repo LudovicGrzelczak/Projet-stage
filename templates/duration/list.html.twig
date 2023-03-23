@@ -1,0 +1,77 @@
+{% extends 'inner-page.html.twig' %}
+
+{% block title %}Duration list
+{% endblock %}
+
+{% block innertitle %}Duration list
+{% endblock %}
+
+{% block body %}
+
+	<div class="container admingamepage">
+		{% if is_granted('ROLE_ADMIN') %}
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="container-fluid mb-5">
+						<h1 class="fw-bold">Duration administration</h1>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<nav class="navbar">
+						<ul>
+							<li><a class="btn btn-sm mt-4" type="button"href="{{ path('edit_duration')}}">Add duration</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="container game mb-4 mtp-5">
+			{% block message %}
+				<div class="col">
+					{% for message in app.session.flashbag.get('info') %}
+						<div class="alert alert-info" role="alert">{{ message }}</div>
+					{% endfor %}
+				</div>
+				<div class="col">
+					{% for message in app.session.flashbag.get('success') %}
+						<div class="alert alert-success" role="alert">{{ message }}</div>
+					{% endfor %}
+				</div>
+				<div class="col">
+					{% for message in app.session.flashbag.get('error') %}
+						<div class="alert alert-danger" role="alert">{{ message }}</div>
+					{% endfor %}
+				</div>
+			{% endblock %}
+			<div class="row card-group list-game">
+				{% if is_granted('ROLE_ADMIN') %}
+					<div class="container list-serv">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">Subscription ID</th>
+									<th scope="col">Type</th>
+									<th scope="col">Ratio</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for duration in duration %}
+									<tr>
+										<th scope="row">{{ duration.id }}</th>
+										<td>{{duration.TypeDuration}}</td>
+										<td>{{duration.ratio}}</td>
+										<td class="list-server-admin">
+											<a href="{{ path('edit_duration', {id: duration.id}) }}" class="btn-server">Edit</a>
+											<a href="{{ path('delete_duration', {id: duration.id}) }}" class="btn-server" onclick="if(!confirm('Voulez vous vraiment supprimer {{ duration.TypeDuration }} ?'))return false">Delete</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}

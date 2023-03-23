@@ -1,0 +1,33 @@
+{% extends 'template.html.twig' %}
+
+
+{% block home %}
+
+	<section class="container home">
+		<div class="row">
+			<div class="col">
+				{% for message in app.flashes('success') %}
+					<div class="alert alert-success" role="alert">{{ message }}</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="jumbotron mt-5">
+				<h1 class="display-4">Welcome to Game|s|erv</h1>
+				<p class="">One game, one server and invite your friends!!</p>
+				<hr class="my-4">
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<div class="col mtp-5">
+						<p>Our game servers are not just perfect, they're a way of life! 
+													We have a team of gamers, programmers and network technicians who monitor, 
+													tweak and keep keep us on top of our game, Server hosting. 
+													This sets us apart from the other providers.</p>
+						<a class="btn btn-full btn-home scrollto mtp-10" href="{{ path('list_games') }}">Game servers</a>
+					{% else %}
+						<a class="btn btn-full btn-home scrollto mtp-5" href="{{ path('app_login') }}">Login</a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

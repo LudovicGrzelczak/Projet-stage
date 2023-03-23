@@ -1,0 +1,88 @@
+{% extends 'inner-page.html.twig' %}
+
+{% block title %}Games list{% endblock %}
+
+{% block innertitle %}Games servers{% endblock %}
+
+{% block body %}
+	
+		<div class="container admingamepage">
+				{% if is_granted('ROLE_ADMIN') %}
+					<div class="row">
+						<div class="col-lg-9">
+							<div class="container-fluid mb-5">
+								<h1 class="fw-bold">Games administration</h1>
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<nav class="navbar">
+								<ul>
+									<li>
+										<a class="btn btn-sm mt-4" type="button" href="{{ path('edit_game') }}">Add game</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
+					</div>
+				{% else %}
+					<div class="row">
+						<div class="col-lg-6 mtp-5">
+							<nav class="navbar">
+								<div class="container-fluid mb-5">
+									<h1 class="fw-bold">Game servers</h1>
+								</div>
+							</nav>
+						</div>
+					</div>
+				{% endif %}
+				
+				<div class="container game mb-4 mtp-5">
+					{% block message %}
+						<div class="col">
+							{% for message in app.session.flashbag.get('info') %}
+								<div class="alert alert-info" role="alert">{{ message }}</div>
+							{% endfor %}
+						</div>
+						<div class="col">
+							{% for message in app.session.flashbag.get('success') %}
+								<div class="alert alert-success" role="alert">{{ message }}</div>
+							{% endfor %}
+						</div>
+						<div class="col">
+							{% for message in app.session.flashbag.get('error') %}
+								<div class="alert alert-danger" role="alert">{{ message }}</div>
+							{% endfor %}
+						</div>
+					{% endblock %}
+					<div class="row card-group list-game">
+						{% for jeu in jeux %}
+							<div class="col-xl-4 col-md-6 col-xs-12" style="margin-bottom: 20px;">
+								{# définir page de rédirection #}
+								<a href="{{ path('game_detail', {id: jeu.id}) }}">
+									<div class="card-game">
+										<img class="game-image" src="{{ asset('uploads/image_jeux/' ~ jeu.imageFilename) }}" alt="{{ jeu.name }}">
+										<div class="card-img-overlay normal">
+											<div class="card-footer">
+												<p class="text card-text">{{ jeu.name }}</p>
+											</div>
+										</div>
+										<div class="hover"></div>
+									</div>
+								</a>
+								{% if is_granted('ROLE_ADMIN') %}
+									<div class="d-flex justify-content-end align-items-center">
+										<div class="ms-auto px-3">
+											<a class="" href="{{ path('edit_game', {id: jeu.id}) }}">Edit</a>
+										</div>
+										<div class="px-2">
+											<a class="" href="{{ path('delete_game', {id: jeu.id}) }}" onclick="if(!confirm('Voulez vous vraiment supprimer {{ jeu.name }} ?'))return false">Delete</a>
+										</div>
+									</div>
+								{% endif %}
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock %}

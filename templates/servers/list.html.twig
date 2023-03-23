@@ -1,0 +1,122 @@
+{% extends 'inner-page.html.twig' %}
+
+{% block title %}Servers list
+{% endblock %}
+
+{% block innertitle %}Servers list
+{% endblock %}
+
+{% block body %}
+	{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+		<div class="container admingamepage">
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="container-fluid mb-5">
+						{% if is_granted('ROLE_ADMIN') %}
+							<h1 class="fw-bold">All servers</h1>
+						{% else %}
+							<h1 class="fw-bold">Your server</h1>
+						{% endif %}
+					</div>
+				</div>
+				{% if is_granted('ROLE_ADMIN') %}
+					<div class="col-lg-3">
+						<nav class="navbar">
+							<ul>
+								<li><a class="btn btn-sm mt-4" type="button"href="{{ path('list_games')}}">Add server</a></li>
+							</ul>
+						</nav>
+					</div>
+				{% endif %}
+			</div>
+			<div class="container server mb-4 mtp-5">
+				{% block message %}
+					<div class="col">
+						{% for message in app.session.flashbag.get('info') %}
+							<div class="alert alert-info" role="alert">{{ message }}</div>
+						{% endfor %}
+					</div>
+					<div class="col">
+						{% for message in app.session.flashbag.get('success') %}
+							<div class="alert alert-success" role="alert">{{ message }}</div>
+						{% endfor %}
+					</div>
+					<div class="col">
+						{% for message in app.session.flashbag.get('error') %}
+							<div class="alert alert-danger" role="alert">{{ message }}</div>
+						{% endfor %}
+					</div>
+				{% endblock %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<div class="container list-serv">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">Server</th>
+									<th scope="col">User</th>
+									<th scope="col">Game</th>
+									<th scope="col">Duration</th>
+									<th scope="col">Subscription date</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for server in servers %}
+									<tr>
+										<th scope="row">{{ server.id }}</th>
+										<td>{{server.UserId.email}}</td>
+										<td>{{server.JeuId.name}}</td>
+										<td>{{server.DurationId.TypeDuration}}</td>
+										<td>{{server.CreatedAt|date('d-m-Y')}}</td>
+										<td class="list-server-admin">
+											<a href="{{ path('server_detail', {id: server.id}) }}" class="btn-server">Detail</a>
+											<a href="#" class="btn-server">Edit</a>
+											<a href="{{ path('delete_server', {id: server.id}) }}" class="btn-server" onclick="if(!confirm('Voulez vous vraiment supprimer {{ server.id }} ?'))return false">Delete</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					<hr>
+					<div class="row card-group list-server">
+						<div class="col-xl-4 col-md-6 col-xs-12" style="margin-bottom: 20px;">
+							<a href="{{ path('list_games') }}">
+								<div class="add-card-server">
+									<div class="card-body">
+										<img class="server-image" src="{{ asset('assets/img/addbutton.png') }}" alt="Add game">
+										<div class="hover"></div>
+									</div>
+									<div class="card-footer">
+										<a href="#" class="btn-server">Add server</a>
+									</div>
+								</div>
+
+							</a>
+						</div>
+						{% for server in servers %}
+							<div class="col-xl-4 col-md-6 col-xs-12" style="margin-bottom: 20px;">
+								<a href="{{ path('server_detail', {id: server.id}) }}">
+									<div class="top-card-server">
+										<img class="server-image" src="{{ asset('uploads/image_jeux/' ~ server.JeuId.imageFilename) }}" alt="Add game">
+										<div class="hover"></div>
+									</div>
+									<div class="bot-card-server">
+										<div class="card-title">
+											<p class="text card-text">Server of
+												{{ server.JeuId.name }}</p>
+										</div>
+										<div class="card-footer">
+											<a href="{{ path('server_detail', {id: server.id}) }}" class="btn-server">Detail</a>
+											<a href="{{ path('delete_server', {id: server.id}) }}" class="btn-server" onclick="if(!confirm('Voulez vous vraiment supprimer votrer serveur sur {{ server.JeuId.name }} ?'))return false">Delete</a>
+										</div>
+									</div>
+								</a>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

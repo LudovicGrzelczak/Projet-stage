@@ -1,0 +1,54 @@
+{% extends 'inner-page.html.twig' %}
+
+
+{% block title %}Add server
+{% endblock %}
+
+{% block innertitle %}Add server
+{% endblock %}
+
+{% block body %}
+	{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+		<div class="container ">
+			<div class="container px-4">
+				<div class="row">
+					<div class="col mx-auto mtp-5">
+						<nav class="navbar">
+							<div class="container mb-5">
+								<h1 class="fw-bold">Add server</h1>
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<div class="mb-4 mtp-5">
+				{% block message %}
+					<div class="col">
+						{% for message in app.session.flashbag.get('info') %}
+							<div class="alert alert-info" role="alert">{{ message }}</div>
+						{% endfor %}
+					</div>
+					<div class="col">
+						{% for message in app.session.flashbag.get('success') %}
+							<div class="alert alert-success" role="alert">{{ message }}</div>
+						{% endfor %}
+					</div>
+					<div class="col">
+						{% for message in app.session.flashbag.get('error') %}
+							<div class="alert alert-danger" role="alert">{{ message }}</div>
+						{% endfor %}
+					</div>
+				{% endblock %}
+			</div>
+			<div class="container ">
+				<div class="row ">
+					<div class="col ">
+						{{ form_start(serverform) }}
+                            <div class="col">{{ form_row(serverform.jeu_id) }}</div>
+                        {{ form_end(serverform) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'inner-page.html.twig' %}
+
+
+{% block title %}Gestion Admin{% endblock %}
+
+{% block innertitle %}Games administration{% endblock %}
+
+{% block body %}
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+	<div class="container admingamepage">
+		<main>
+			<div class="container-fluid px-4">
+				{% if is_granted('ROLE_ADMIN') %}
+					<div class="row">
+						<div class="col mx-auto mtp-5">
+							<nav class="navbar">
+								<div class="container-fluid mb-5">
+									<h1 class="fw-bold">Games administration</h1>
+								</div>
+							</nav>
+						</div>
+					</div>
+				{% endif %}
+				<div class="mb-4 mtp-5">
+					{% block message %}
+						<div class="col">
+							{% for message in app.session.flashbag.get('info') %}
+								<div class="alert alert-info" role="alert">{{ message }}</div>
+							{% endfor %}
+						</div>
+						<div class="col">
+							{% for message in app.session.flashbag.get('success') %}
+								<div class="alert alert-success" role="alert">{{ message }}</div>
+							{% endfor %}
+						</div>
+						<div class="col">
+							{% for message in app.session.flashbag.get('error') %}
+								<div class="alert alert-danger" role="alert">{{ message }}</div>
+							{% endfor %}
+						</div>
+					{% endblock %}
+					<div class="card-body">
+						<div class="album py-5">
+							<div class="container">
+                                {{ form_start(durationform) }}
+								<div class="row justify-content-beetween">
+                                    <div class="col-lg-4">{{ form_row(durationform.type_duration)}}</div>
+                                    <div class="col-lg-4">{{ form_row(durationform.ratio)}}</div>
+								</div>
+                                <button type="submit" class="btn my-3">Ajouter / Editer</button>
+                                {{ form_end(durationform) }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+</div></div>{% endif %}{% endblock %}
